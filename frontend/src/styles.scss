@@ -1,0 +1,71 @@
+// ══════════════════════════════════════════════════════════
+// InvestFolio — Global Styles
+// ══════════════════════════════════════════════════════════
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ─── Reset ─────────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+// ─── Custom Scrollbar ──────────────────────────────────
+html {
+  @include custom-scrollbar;
+}
+
+// ─── Selection ─────────────────────────────────────────
+::selection {
+  background: rgba($brand-primary, 0.35);
+  color: $text-primary;
+}
+
+// ─── Smooth Transitions ────────────────────────────────
+a,
+button {
+  transition: all $transition-base;
+}
+
+// ─── Material Dialog — dark overlay ────────────────────
+.dark-dialog {
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-color: #{$surface-base};
+    border: 1px solid $border-medium;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-xl;
+  }
+}
+
+// ─── Material overrides (global) ───────────────────────
+.mat-mdc-tab-header {
+  border-bottom: 1px solid $border-subtle !important;
+}
+
+.mat-mdc-table {
+  background: transparent !important;
+}
+
+.mat-mdc-row:hover {
+  background: rgba($text-muted, 0.04) !important;
+}
+
+// ─── Tooltip ───────────────────────────────────────────
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-color: #{$surface-light};
+  --mdc-plain-tooltip-supporting-text-color: #{$text-secondary};
+}
+
+// ─── Snackbar ──────────────────────────────────────────
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: #{$surface-light};
+  --mdc-snackbar-supporting-text-color: #{$text-primary};
+}

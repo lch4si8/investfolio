@@ -1,0 +1,200 @@
+<div class="portfolio-container">
+  <div class="portfolio-header">
+    <h1>Portfolio</h1>
+    <button mat-fab extended color="primary" (click)="openAddDialog(selectedTab() === 0 ? 'stock' : 'crypto')">
+      <mat-icon>add</mat-icon>
+      Add Transaction
+    </button>
+  </div>
+
+  @if (portfolioService.isLoading() || transactionService.isLoading()) {
+    <div class="loading-overlay">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+
+  <mat-tab-group (selectedIndexChange)="onTabChange($event)" animationDuration="300ms" class="portfolio-tabs">
+    <!-- Stocks Tab -->
+    <mat-tab>
+      <ng-template matTabLabel>
+        <mat-icon>show_chart</mat-icon>
+        <span>Stocks</span>
+      </ng-template>
+
+      <!-- Holdings -->
+      <mat-card class="section-card">
+        <mat-card-header>
+          <mat-card-title>Stock Holdings</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (portfolioService.stockHoldings().length > 0) {
+            <table mat-table [dataSource]="portfolioService.stockHoldings()" class="holdings-table">
+              <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef>Symbol</th>
+                <td mat-cell *matCellDef="let h">
+                  <span class="symbol-badge stock-badge">{{ h.asset.symbol }}</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let h">{{ h.asset.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef>Qty</th>
+                <td mat-cell *matCellDef="let h">{{ h.quantity }}</td>
+              </ng-container>
+              <ng-container matColumnDef="avgCost">
+                <th mat-header-cell *matHeaderCellDef>Avg Cost</th>
+                <td mat-cell *matCellDef="let h">{{ h.avgCost | currency }}</td>
+              </ng-container>
+              <ng-container matColumnDef="currentPrice">
+                <th mat-header-cell *matHeaderCellDef>Price</th>
+                <td mat-cell *matCellDef="let h">{{ h.asset.currentPrice | currency }}</td>
+              </ng-container>
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Value</th>
+                <td mat-cell *matCellDef="let h">{{ h.currentValue | currency }}</td>
+              </ng-container>
+              <ng-container matColumnDef="profitLoss">
+                <th mat-header-cell *matHeaderCellDef>P/L</th>
+                <td mat-cell *matCellDef="let h">
+                  <span [class]="h.profitLoss >= 0 ? 'profit' : 'loss'">
+                    {{ h.profitLoss | currency }} ({{ h.profitLossPercentage | percent:'1.2-2' }})
+                  </span>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsHoldings"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsHoldings"></tr>
+            </table>
+          } @else {
+            <div class="empty-state">
+              <mat-icon>inventory_2</mat-icon>
+              <p>No stock holdings yet. Add your first transaction!</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Crypto Tab -->
+    <mat-tab>
+      <ng-template matTabLabel>
+        <mat-icon>currency_bitcoin</mat-icon>
+        <span>Crypto</span>
+      </ng-template>
+
+      <mat-card class="section-card">
+        <mat-card-header>
+          <mat-card-title>Crypto Holdings</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (portfolioService.cryptoHoldings().length > 0) {
+            <table mat-table [dataSource]="portfolioService.cryptoHoldings()" class="holdings-table">
+              <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef>Symbol</th>
+                <td mat-cell *matCellDef="let h">
+                  <span class="symbol-badge crypto-badge">{{ h.asset.symbol }}</span>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let h">{{ h.asset.name }}</td>
+              </ng-container>
+              <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef>Qty</th>
+                <td mat-cell *matCellDef="let h">{{ h.quantity }}</td>
+              </ng-container>
+              <ng-container matColumnDef="avgCost">
+                <th mat-header-cell *matHeaderCellDef>Avg Cost</th>
+                <td mat-cell *matCellDef="let h">{{ h.avgCost | currency }}</td>
+              </ng-container>
+              <ng-container matColumnDef="currentPrice">
+                <th mat-header-cell *matHeaderCellDef>Price</th>
+                <td mat-cell *matCellDef="let h">{{ h.asset.currentPrice | currency }}</td>
+              </ng-container>
+              <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Value</th>
+                <td mat-cell *matCellDef="let h">{{ h.currentValue | currency }}</td>
+              </ng-container>
+              <ng-container matColumnDef="profitLoss">
+                <th mat-header-cell *matHeaderCellDef>P/L</th>
+                <td mat-cell *matCellDef="let h">
+                  <span [class]="h.profitLoss >= 0 ? 'profit' : 'loss'">
+                    {{ h.profitLoss | currency }} ({{ h.profitLossPercentage | percent:'1.2-2' }})
+                  </span>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsHoldings"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsHoldings"></tr>
+            </table>
+          } @else {
+            <div class="empty-state">
+              <mat-icon>currency_bitcoin</mat-icon>
+              <p>No crypto holdings yet. Add your first transaction!</p>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Transactions History -->
+  <mat-card class="section-card transactions-card">
+    <mat-card-header>
+      <mat-card-title>Transaction History</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (transactionService.transactions().length > 0) {
+        <table mat-table [dataSource]="transactionService.transactions()" class="transactions-table">
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let t">{{ t.transactionDate | date:'mediumDate' }}</td>
+          </ng-container>
+          <ng-container matColumnDef="symbol">
+            <th mat-header-cell *matHeaderCellDef>Asset</th>
+            <td mat-cell *matCellDef="let t">
+              <span class="symbol-badge" [class]="t.asset?.type === 'crypto' ? 'crypto-badge' : 'stock-badge'">
+                {{ t.asset?.symbol }}
+              </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let t">
+              <mat-chip [class]="t.type === 'buy' ? 'buy-chip' : 'sell-chip'">
+                {{ t.type | uppercase }}
+              </mat-chip>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Qty</th>
+            <td mat-cell *matCellDef="let t">{{ t.quantity }}</td>
+          </ng-container>
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef>Price</th>
+            <td mat-cell *matCellDef="let t">{{ t.priceAtTransaction | currency }}</td>
+          </ng-container>
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let t">{{ t.quantity * t.priceAtTransaction | currency }}</td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let t">
+              <button mat-icon-button color="warn" (click)="deleteTransaction(t.id)" matTooltip="Delete">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsTransactions"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsTransactions"></tr>
+        </table>
+      } @else {
+        <div class="empty-state">
+          <mat-icon>receipt_long</mat-icon>
+          <p>No transactions recorded yet.</p>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

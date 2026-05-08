@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "InvestFolio — Lambda backend for investment portfolio tracker",
+  "main": "index.js",
+  "scripts": {
+    "build": "node esbuild.config.js",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.161",
+    "@types/node": "^25.6.1",
+    "@types/pg": "^8.20.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.3"
+  }
+}

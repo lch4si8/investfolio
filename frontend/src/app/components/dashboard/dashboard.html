@@ -1,0 +1,154 @@
+<div class="dashboard-container">
+  @if (portfolioService.isLoading()) {
+    <div class="loading-overlay">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Syncing prices...</p>
+    </div>
+  }
+
+  @if (portfolioService.error(); as errorMsg) {
+    <mat-card class="error-card">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMsg }}</span>
+    </mat-card>
+  }
+
+  <!-- Net Worth Hero -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <p class="hero-label">Total Net Worth</p>
+      <h1 class="hero-value">{{ portfolioService.netWorth() | currency:'USD':'symbol':'1.2-2' }}</h1>
+      <div class="hero-tags">
+        <span class="tag tag-stocks">
+          <mat-icon>trending_up</mat-icon>
+          Stocks {{ portfolioService.stocksPercentage() | percent:'1.1-1' }}
+        </span>
+        <span class="tag tag-crypto">
+          <mat-icon>currency_bitcoin</mat-icon>
+          Crypto {{ portfolioService.cryptoPercentage() | percent:'1.1-1' }}
+        </span>
+      </div>
+    </div>
+    <button mat-fab extended color="primary" (click)="onRefresh()" class="refresh-btn">
+      <mat-icon>sync</mat-icon>
+      Sync Prices
+    </button>
+  </section>
+
+  <!-- Stats Cards Row -->
+  <section class="stats-row">
+    <mat-card class="stat-card">
+      <div class="stat-icon stocks-icon">
+        <mat-icon>show_chart</mat-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Stocks Value</span>
+        <span class="stat-value">{{ portfolioService.stocksValue() | currency:'USD':'symbol':'1.2-2' }}</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-icon crypto-icon">
+        <mat-icon>currency_bitcoin</mat-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Crypto Value</span>
+        <span class="stat-value">{{ portfolioService.cryptoValue() | currency:'USD':'symbol':'1.2-2' }}</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-icon holdings-icon">
+        <mat-icon>inventory_2</mat-icon>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Total Holdings</span>
+        <span class="stat-value">{{ portfolioService.portfolio()?.holdings?.length ?? 0 }}</span>
+      </div>
+    </mat-card>
+  </section>
+
+  <!-- Charts Row -->
+  <section class="charts-row">
+    <mat-card class="chart-card allocation-card">
+      <mat-card-header>
+        <mat-card-title>Allocation</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-wrapper doughnut-wrapper">
+          <canvas baseChart
+            type="doughnut"
+            [data]="allocationChartData()"
+            [options]="allocationChartOptions">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="chart-card holdings-chart-card">
+      <mat-card-header>
+        <mat-card-title>Top Holdings</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-wrapper bar-wrapper">
+          <canvas baseChart
+            type="bar"
+            [data]="holdingsChartData()"
+            [options]="holdingsChartOptions">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <!-- Top Movers -->
+  <section class="movers-row">
+    <mat-card class="movers-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="gainer-icon">arrow_upward</mat-icon>
+          Top Gainers
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @for (holding of topGainers(); track holding.asset.id) {
+          <div class="mover-item">
+            <div class="mover-info">
+              <span class="mover-symbol">{{ holding.asset.symbol }}</span>
+              <span class="mover-name">{{ holding.asset.name }}</span>
+            </div>
+            <span class="mover-change gainer">
+              +{{ holding.profitLossPercentage | percent:'1.2-2' }}
+            </span>
+          </div>
+        } @empty {
+          <p class="empty-state">No data yet</p>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="movers-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="loser-icon">arrow_downward</mat-icon>
+          Top Losers
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @for (holding of topLosers(); track holding.asset.id) {
+          <div class="mover-item">
+            <div class="mover-info">
+              <span class="mover-symbol">{{ holding.asset.symbol }}</span>
+              <span class="mover-name">{{ holding.asset.name }}</span>
+            </div>
+            <span class="mover-change loser">
+              {{ holding.profitLossPercentage | percent:'1.2-2' }}
+            </span>
+          </div>
+        } @empty {
+          <p class="empty-state">No data yet</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>

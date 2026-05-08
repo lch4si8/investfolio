@@ -1,0 +1,29 @@
+# ══════════════════════════════════════════════════
+# InvestFolio — Root .gitignore
+# ══════════════════════════════════════════════════
+
+# ─── Terraform ──────────────────────────────────
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.*
+infra/*.tfplan
+infra/.terraform.lock.hcl
+infra/crash.log
+infra/*.tfvars
+!infra/*.tfvars.example
+
+# ─── IDE ────────────────────────────────────────
+.idea/
+.vscode/
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# ─── OS ─────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Logs ───────────────────────────────────────
+*.log

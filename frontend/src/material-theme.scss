@@ -1,0 +1,33 @@
+// ══════════════════════════════════════════════════════════
+// InvestFolio — Material 3 Dark Theme
+// ══════════════════════════════════════════════════════════
+@use '@angular/material' as mat;
+@use 'variables' as *;
+
+html {
+  height: 100%;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$violet-palette,
+        tertiary: mat.$cyan-palette,
+        theme-type: dark,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  color-scheme: dark;
+  background-color: $surface-dark;
+  color: $text-secondary;
+  font: var(--mat-sys-body-medium);
+  font-family: $font-family;
+  margin: 0;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,0 +1,148 @@
+// ══════════════════════════════════════════════════════════
+// Portfolio — Holdings & Transactions
+// ══════════════════════════════════════════════════════════
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.portfolio-container {
+  max-width: $content-max-width;
+  margin: 0 auto;
+  @include flex-col;
+}
+
+// ─── Header ────────────────────────────────────────────
+.portfolio-header {
+  @include flex-between;
+  @include fade-in-up;
+
+  h1 {
+    margin: 0;
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    @include gradient-text(linear-gradient(135deg, $text-secondary, $text-primary));
+    letter-spacing: -0.5px;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: $spacing-lg;
+    align-items: flex-start;
+
+    h1 {
+      font-size: $font-size-2xl;
+    }
+  }
+}
+
+// ─── Loading ───────────────────────────────────────────
+.loading-overlay {
+  @include flex-center;
+  padding: $spacing-2xl;
+}
+
+// ─── Tabs ──────────────────────────────────────────────
+.portfolio-tabs {
+  --mdc-tab-indicator-active-indicator-color: #{$brand-primary};
+  --mat-tab-header-active-label-text-color: #{$text-primary};
+  --mat-tab-header-inactive-label-text-color: #{$text-subtle};
+  --mat-tab-header-active-hover-label-text-color: #{$text-primary};
+  --mat-tab-header-inactive-hover-label-text-color: #{$text-tertiary};
+
+  mat-icon {
+    margin-right: $spacing-sm;
+    @include icon-size(18px);
+  }
+}
+
+// ─── Section Cards ─────────────────────────────────────
+.section-card {
+  @include glass-card;
+  padding: $spacing-xl;
+  margin-top: $spacing-lg;
+  @include fade-in-up(0.35s, 0.08s);
+
+  mat-card-title {
+    color: $text-primary;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semi;
+  }
+}
+
+.transactions-card {
+  margin-top: 0;
+}
+
+// ─── Tables ────────────────────────────────────────────
+.holdings-table,
+.transactions-table {
+  width: 100%;
+  background: transparent;
+
+  th {
+    @include label;
+    font-size: $font-size-xs;
+    border-bottom-color: $border-medium;
+    padding-top: $spacing-md;
+    padding-bottom: $spacing-md;
+  }
+
+  td {
+    color: $text-secondary;
+    border-bottom-color: $border-subtle;
+    font-size: $font-size-base;
+    padding-top: $spacing-md;
+    padding-bottom: $spacing-md;
+  }
+
+  tr {
+    transition: background $transition-fast;
+
+    &:hover {
+      background: rgba($text-muted, 0.04);
+    }
+  }
+}
+
+// ─── Symbol Badges ─────────────────────────────────────
+.symbol-badge {
+  @include badge(transparent, transparent);
+
+  &.stock-badge {
+    @include badge($color-stocks-bg, $color-stocks-text);
+  }
+
+  &.crypto-badge {
+    @include badge($color-crypto-bg, $color-crypto-text);
+  }
+}
+
+// ─── Transaction Chips ─────────────────────────────────
+.buy-chip {
+  --mdc-chip-elevated-container-color: #{$color-success-bg};
+  --mdc-chip-label-text-color: #{$color-success};
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semi;
+}
+
+.sell-chip {
+  --mdc-chip-elevated-container-color: #{$color-danger-bg};
+  --mdc-chip-label-text-color: #{$color-danger};
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semi;
+}
+
+// ─── P/L Colors ────────────────────────────────────────
+.profit {
+  color: $color-success;
+  font-weight: $font-weight-medium;
+}
+
+.loss {
+  color: $color-danger;
+  font-weight: $font-weight-medium;
+}
+
+// ─── Empty State ───────────────────────────────────────
+.empty-state {
+  @include empty-state;
+}

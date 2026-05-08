@@ -1,0 +1,328 @@
+// ══════════════════════════════════════════════════════════
+// Dashboard — Main Overview
+// ══════════════════════════════════════════════════════════
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.dashboard-container {
+  max-width: $content-max-width;
+  margin: 0 auto;
+  @include flex-col;
+}
+
+// ─── Loading / Error ───────────────────────────────────
+.loading-overlay {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-lg;
+  padding: $spacing-4xl * 2;
+  color: $text-muted;
+
+  p {
+    font-size: $font-size-base;
+    @include fade-in-up(0.3s, 0.1s);
+  }
+}
+
+.error-card {
+  @include flex-between;
+  padding: $spacing-lg $spacing-xl;
+  background: $color-danger-bg;
+  border: 1px solid $color-danger-border;
+  color: color.adjust($color-danger, $lightness: 15%);
+  border-radius: $radius-lg;
+  font-size: $font-size-base;
+  @include fade-in-up;
+
+  mat-icon {
+    flex-shrink: 0;
+  }
+}
+
+// ─── Hero Section ──────────────────────────────────────
+.hero-section {
+  @include flex-between;
+  padding: $spacing-3xl + 8;
+  border-radius: $radius-xl;
+  background:
+    linear-gradient(135deg, $surface-base 0%, $surface-dark 45%, color.adjust($surface-darker, $lightness: -3%) 100%);
+  border: 1px solid $brand-primary-border;
+  position: relative;
+  overflow: hidden;
+  @include fade-in-up;
+
+  // Decorative orbs
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  &::before {
+    top: -40%;
+    right: -15%;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba($brand-primary, 0.1) 0%, transparent 65%);
+  }
+
+  &::after {
+    bottom: -60%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba($brand-secondary, 0.06) 0%, transparent 65%);
+  }
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-xl;
+    padding: $spacing-2xl;
+  }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-label {
+  margin: 0;
+  @include label;
+  letter-spacing: 1.5px;
+}
+
+.hero-value {
+  margin: $spacing-sm 0 $spacing-lg;
+  font-size: $font-size-hero;
+  font-weight: $font-weight-bold;
+  letter-spacing: -1.5px;
+  @include gradient-text(linear-gradient(135deg, $text-secondary, $text-primary));
+  line-height: 1.1;
+
+  @include mobile {
+    font-size: $font-size-4xl;
+  }
+}
+
+.hero-tags {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.tag {
+  @include pill(transparent, transparent);
+
+  mat-icon {
+    @include icon-size(16px);
+  }
+
+  &-stocks {
+    @include pill($color-stocks-bg, $color-stocks-text, $color-stocks-border);
+  }
+
+  &-crypto {
+    @include pill($color-crypto-bg, $color-crypto-text, $color-crypto-border);
+  }
+}
+
+.refresh-btn {
+  position: relative;
+  z-index: 1;
+}
+
+// ─── Stats Row ─────────────────────────────────────────
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-lg;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  padding: $spacing-xl;
+  @include glass-card-interactive;
+  @include fade-in-up;
+  @include stagger-children;
+}
+
+.stat-icon {
+  @include flex-center;
+  width: 52px;
+  height: 52px;
+  border-radius: $radius-lg;
+  flex-shrink: 0;
+  transition: transform $transition-slow;
+
+  mat-icon {
+    @include icon-size(26px);
+  }
+
+  .stat-card:hover & {
+    transform: scale(1.08);
+  }
+}
+
+.stocks-icon {
+  background: $color-stocks-bg;
+  color: $color-stocks;
+  box-shadow: 0 0 16px rgba($color-stocks, 0.15);
+}
+
+.crypto-icon {
+  background: $color-crypto-bg;
+  color: $color-crypto;
+  box-shadow: 0 0 16px rgba($color-crypto, 0.15);
+}
+
+.holdings-icon {
+  background: $color-success-bg;
+  color: $color-success;
+  box-shadow: 0 0 16px rgba($color-success, 0.15);
+}
+
+.stat-info {
+  @include flex-col($spacing-xs);
+}
+
+.stat-label {
+  @include label;
+}
+
+.stat-value {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semi;
+  color: $text-primary;
+}
+
+// ─── Charts Row ────────────────────────────────────────
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: $spacing-lg;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  @include glass-card;
+  padding: $spacing-xl;
+  @include fade-in-up(0.4s, 0.15s);
+
+  mat-card-header {
+    margin-bottom: $spacing-lg;
+  }
+
+  mat-card-title {
+    color: $text-primary;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semi;
+  }
+}
+
+.chart-wrapper {
+  position: relative;
+}
+
+.doughnut-wrapper,
+.bar-wrapper {
+  height: 280px;
+}
+
+// ─── Movers Row ────────────────────────────────────────
+.movers-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+}
+
+.movers-card {
+  @include glass-card;
+  padding: $spacing-xl;
+  @include fade-in-up(0.4s, 0.2s);
+
+  mat-card-title {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    color: $text-primary;
+    font-size: $font-size-md;
+    font-weight: $font-weight-semi;
+  }
+}
+
+.gainer-icon { color: $color-success; }
+.loser-icon  { color: $color-danger; }
+
+.mover-item {
+  @include flex-between;
+  padding: $spacing-md 0;
+  border-bottom: 1px solid $border-subtle;
+  transition: background $transition-fast;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: rgba($text-muted, 0.03);
+    margin: 0 (-$spacing-sm);
+    padding-left: $spacing-sm;
+    padding-right: $spacing-sm;
+    border-radius: $radius-md;
+  }
+}
+
+.mover-info {
+  @include flex-col(2px);
+}
+
+.mover-symbol {
+  font-weight: $font-weight-semi;
+  color: $text-primary;
+  font-size: $font-size-base;
+}
+
+.mover-name {
+  font-size: $font-size-sm;
+  color: $text-subtle;
+}
+
+.mover-change {
+  font-weight: $font-weight-semi;
+  font-size: $font-size-base;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+
+  &.gainer {
+    color: $color-success;
+    background: $color-success-bg;
+  }
+
+  &.loser {
+    color: $color-danger;
+    background: $color-danger-bg;
+  }
+}
+
+// ─── Empty State ───────────────────────────────────────
+.empty-state {
+  @include empty-state;
+}

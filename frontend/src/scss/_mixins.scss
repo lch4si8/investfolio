@@ -1,0 +1,200 @@
+// ══════════════════════════════════════════════════════════
+// InvestFolio — SCSS Mixins & Utilities
+// ══════════════════════════════════════════════════════════
+@use 'sass:color';
+@use 'variables' as *;
+
+// ─── Responsive ────────────────────────────────────────
+@mixin mobile {
+  @media (max-width: $bp-tablet) { @content; }
+}
+
+@mixin tablet {
+  @media (max-width: $bp-desktop) { @content; }
+}
+
+@mixin desktop {
+  @media (min-width: $bp-desktop + 1) { @content; }
+}
+
+// ─── Card ──────────────────────────────────────────────
+@mixin glass-card($bg: $surface-base) {
+  background: $bg;
+  border: 1px solid $border-light;
+  border-radius: $radius-lg;
+  backdrop-filter: blur(12px);
+  transition:
+    transform $transition-base,
+    box-shadow $transition-base,
+    border-color $transition-base;
+
+  &:hover {
+    border-color: $border-hover;
+    box-shadow: $shadow-lg;
+  }
+}
+
+@mixin glass-card-interactive($bg: $surface-base) {
+  @include glass-card($bg);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-glow-hover;
+  }
+}
+
+// ─── Gradient Text ─────────────────────────────────────
+@mixin gradient-text($gradient: $brand-gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// ─── Label / Caption ───────────────────────────────────
+@mixin label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+// ─── Badge / Pill ──────────────────────────────────────
+@mixin badge($bg, $color) {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-sm;
+  font-size: $font-size-base - 1;
+  font-weight: $font-weight-semi;
+  letter-spacing: 0.3px;
+  background: $bg;
+  color: $color;
+}
+
+@mixin pill($bg, $color, $border: transparent) {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-2xl;
+  font-size: $font-size-base - 1;
+  font-weight: $font-weight-medium;
+  background: $bg;
+  color: $color;
+  border: 1px solid $border;
+}
+
+// ─── Flex shortcuts ────────────────────────────────────
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-col($gap: $spacing-2xl) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+// ─── Icon sizing ───────────────────────────────────────
+@mixin icon-size($size: 24px) {
+  font-size: $size;
+  width: $size;
+  height: $size;
+}
+
+// ─── Scrollbar ─────────────────────────────────────────
+@mixin custom-scrollbar($width: 8px) {
+  &::-webkit-scrollbar {
+    width: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $surface-dark;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $surface-light;
+    border-radius: $width * 0.5;
+
+    &:hover {
+      background: $surface-lighter;
+    }
+  }
+}
+
+// ─── Glow ring on focus ────────────────────────────────
+@mixin focus-ring($color: $brand-primary) {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba($color, 0.3);
+}
+
+// ─── Animated shimmer for loading skeletons ────────────
+@mixin shimmer {
+  background: linear-gradient(
+    90deg,
+    $surface-base 25%,
+    color.adjust($surface-base, $lightness: 5%) 37%,
+    $surface-base 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+// ─── Entrance animations ──────────────────────────────
+@mixin fade-in-up($duration: 0.4s, $delay: 0s) {
+  animation: fadeInUp $duration cubic-bezier(0.16, 1, 0.3, 1) $delay both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@mixin stagger-children($delay-step: 0.06s, $count: 8) {
+  @for $i from 1 through $count {
+    &:nth-child(#{$i}) {
+      animation-delay: $delay-step * $i;
+    }
+  }
+}
+
+// ─── Empty state ───────────────────────────────────────
+@mixin empty-state {
+  @include flex-center;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-4xl;
+  color: $text-subtle;
+
+  mat-icon {
+    @include icon-size(48px);
+    opacity: 0.4;
+  }
+
+  p {
+    margin: 0;
+    font-size: $font-size-base;
+  }
+}
