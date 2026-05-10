@@ -17,7 +17,7 @@
   <section class="hero-section">
     <div class="hero-content">
       <p class="hero-label">Total Net Worth</p>
-      <h1 class="hero-value">{{ portfolioService.netWorth() | currency:'USD':'symbol':'1.2-2' }}</h1>
+      <h1 class="hero-value">{{ portfolioService.netWorth() | currency:'EUR':'symbol':'1.2-2' }}</h1>
       <div class="hero-tags">
         <span class="tag tag-stocks">
           <mat-icon>trending_up</mat-icon>
@@ -43,7 +43,7 @@
       </div>
       <div class="stat-info">
         <span class="stat-label">Stocks Value</span>
-        <span class="stat-value">{{ portfolioService.stocksValue() | currency:'USD':'symbol':'1.2-2' }}</span>
+        <span class="stat-value">{{ portfolioService.stocksValue() | currency:'EUR':'symbol':'1.2-2' }}</span>
       </div>
     </mat-card>
 
@@ -53,7 +53,7 @@
       </div>
       <div class="stat-info">
         <span class="stat-label">Crypto Value</span>
-        <span class="stat-value">{{ portfolioService.cryptoValue() | currency:'USD':'symbol':'1.2-2' }}</span>
+        <span class="stat-value">{{ portfolioService.cryptoValue() | currency:'EUR':'symbol':'1.2-2' }}</span>
       </div>
     </mat-card>
 

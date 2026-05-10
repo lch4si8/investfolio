@@ -50,9 +50,9 @@ import { MatNativeDateModule } from '@angular/material/core';
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Price (USD)</mat-label>
+          <mat-label>Price (EUR)</mat-label>
           <input matInput type="number" [(ngModel)]="price" min="0" step="any" required>
-          <span matPrefix>$&nbsp;</span>
+          <span matPrefix>€&nbsp;</span>
         </mat-form-field>
       </div>
 
@@ -66,7 +66,7 @@ import { MatNativeDateModule } from '@angular/material/core';
       @if (quantity > 0 && price > 0) {
         <div class="total-preview">
           <span>Total</span>
-          <span class="total-value">\${{ (quantity * price).toFixed(2) }}</span>
+          <span class="total-value">€{{ (quantity * price).toFixed(2) }}</span>
         </div>
       }
     </mat-dialog-content>

@@ -100,7 +100,7 @@ export class Dashboard implements OnInit {
         ticks: {
           color: '#94a3b8',
           font: { size: 11 },
-          callback: (value) => '$' + Number(value).toLocaleString(),
+          callback: (value) => '€' + Number(value).toLocaleString(),
         },
         grid: { color: 'rgba(148, 163, 184, 0.1)' },
       },
