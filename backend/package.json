@@ -4,7 +4,7 @@
   "description": "InvestFolio — Lambda backend for investment portfolio tracker",
   "main": "index.js",
   "scripts": {
-    "build": "node esbuild.config.js",
+    "build": "node esbuild.config.js && node scripts/package-lambdas.js",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,6 +20,7 @@
     "@types/aws-lambda": "^8.10.161",
     "@types/node": "^25.6.1",
     "@types/pg": "^8.20.0",
+    "archiver": "^7.0.1",
     "esbuild": "^0.28.0",
     "typescript": "^6.0.3"
   }
