@@ -16,9 +16,27 @@ export class TransactionService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    this.http.get<Transaction[]>(`${this.apiUrl}/transactions`).subscribe({
+    this.http.get<any[]>(`${this.apiUrl}/transactions`).subscribe({
       next: (data) => {
-        this.transactions.set(data);
+        const mappedTransactions: Transaction[] = data.map(t => ({
+          id: t.id,
+          userId: t.user_id || t.userId,
+          assetId: t.asset_id || t.assetId,
+          type: t.type,
+          quantity: Number(t.quantity),
+          priceAtTransaction: Number(t.price_at_transaction || t.priceAtTransaction),
+          transactionDate: t.transaction_date || t.transactionDate,
+          createdAt: t.created_at || t.createdAt,
+          asset: t.asset ? {
+            id: t.asset.id,
+            symbol: t.asset.symbol,
+            name: t.asset.name,
+            type: t.asset.type,
+            currentPrice: Number(t.asset.current_price || t.asset.currentPrice),
+            priceUpdatedAt: t.asset.price_updated_at || t.asset.priceUpdatedAt
+          } : undefined
+        }));
+        this.transactions.set(mappedTransactions);
         this.isLoading.set(false);
       },
       error: (err) => {
